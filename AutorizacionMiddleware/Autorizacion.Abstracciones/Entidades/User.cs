@@ -12,7 +12,7 @@ namespace Autorizacion.Abstracciones.Entidades
         public Guid UserId { get; set; }
 
         //---
-        public char UserCode { get; set; }
+        public char? UserCode { get; set; }
         public string UserName { get; set; }
         public string UserLastName { get; set; }
         public string PasswordHash { get; set; }
