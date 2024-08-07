@@ -26,8 +26,8 @@ namespace Autorizacion.Middleware
         //Se crea la interseccion cuando el Midelware insecta en el flujo de vida de la aplicacion
         //Se captura la informacion
         public async Task InvokeAsync(HttpContext httpContext, IAutorizacionBW autorizacionBW)
-        { 
-        _autorizacionBW = autorizacionBW;
+        {
+            _autorizacionBW = autorizacionBW;
             ClaimsIdentity appIdentity = await verificarAutorizacion(httpContext);
             httpContext.User.AddIdentity(appIdentity);
 
@@ -37,13 +37,13 @@ namespace Autorizacion.Middleware
 
         private async Task<ClaimsIdentity> verificarAutorizacion(HttpContext httpContext)
         {
-           var claims=new List<Claim>();
+            var claims = new List<Claim>();
             if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
             {
                 await GetUser(httpContext, claims);
                 await GetRole(httpContext, claims);
             }
-            var appIdentity=new ClaimsIdentity(claims);
+            var appIdentity = new ClaimsIdentity(claims);
             return appIdentity;
         }
 
@@ -51,8 +51,10 @@ namespace Autorizacion.Middleware
         {
             //Obtenemos todos los perfiles
             var Roles = await GetInformationRole(httpContext);
-            if (Roles != null && Roles.Any()) { 
-            foreach (var role in Roles) {
+            if (Roles != null && Roles.Any())
+            {
+                foreach (var role in Roles)
+                {
                     claims.Add(new Claim(ClaimTypes.Role, role.RoleId.ToString()));
                 }
             }
@@ -61,7 +63,11 @@ namespace Autorizacion.Middleware
         //Vamos uy obtnemos lo Roles
         private async Task<IEnumerable<Role>> GetInformationRole(HttpContext httpContext)
         {
-            return await _autorizacionBW.GetRolesXUsers(new Abstracciones.Modelos.User { UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value });
+            return await _autorizacionBW.GetRolesXUsers(
+                new Abstracciones.Modelos.User
+                {
+                    UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value
+                });
         }
 
         private async Task GetUser(HttpContext httpContext, List<Claim> claims)
@@ -84,7 +90,7 @@ namespace Autorizacion.Middleware
         //Le pasamos el parametro ya que puede ser usuario o correo
         private async Task<User> GetInformationUser(HttpContext httpContext)
         {
-            return await _autorizacionBW.GetUser(new Abstracciones.Modelos.User { UserName=httpContext.User.Claims.Where(c=>c.Type =="usuario").FirstOrDefault().Value });
+            return await _autorizacionBW.GetUser(new Abstracciones.Modelos.User { UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value });
         }
     }
 

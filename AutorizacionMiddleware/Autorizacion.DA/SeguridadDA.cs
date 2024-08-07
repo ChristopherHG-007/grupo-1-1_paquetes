@@ -20,17 +20,27 @@ namespace Autorizacion.DA
         public async Task<IEnumerable<Role>> GetRolesXUsers(User user)
         {
             string sql = @"[GetRolesXUsers]";
-            var consulta = await _sqlConnection.QueryAsync<Abstracciones.Entidades.Role>(sql, new { Email = user.Email, UserName = user.UserName });
+            var consulta = await _sqlConnection.QueryAsync<Abstracciones.Entidades.Role>(sql,
+                new
+                {
+                    Email = user.Email,
+                    UserName = user.UserName
+                });
             return Convertidor.ConvertirLista<Abstracciones.Entidades.Role, Abstracciones.Modelos.Role>(consulta);
         }
 
         public async Task<User> GetUser(User user)
         {
             string sql = @"[GetUser]";
-            var consulta = await _sqlConnection.QueryAsync<Abstracciones.Entidades.User>(sql, new { Email = user.Email, UserName = user.UserName });
+            var consulta = await _sqlConnection.QueryAsync<Abstracciones.Entidades.User>(sql,
+                new
+                {
+                    Email = user.Email,
+                    UserName = user.UserName
+                });
             return Convertidor.Convertir<Abstracciones.Entidades.User, Abstracciones.Modelos.User>(consulta.FirstOrDefault());
         }
 
-        
+
     }
 }
