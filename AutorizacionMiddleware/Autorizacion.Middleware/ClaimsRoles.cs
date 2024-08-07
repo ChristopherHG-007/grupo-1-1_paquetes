@@ -90,7 +90,13 @@ namespace Autorizacion.Middleware
         //Le pasamos el parametro ya que puede ser usuario o correo
         private async Task<User> GetInformationUser(HttpContext httpContext)
         {
-            return await _autorizacionBW.GetUser(new Abstracciones.Modelos.User { UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value });
+            var userName = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new InvalidOperationException("User name claim is missing");
+            }
+
+            return await _autorizacionBW.GetUser(new Abstracciones.Modelos.User { UserName = userName });
         }
     }
 
