@@ -66,7 +66,7 @@ namespace Autorizacion.Middleware
             return await _autorizacionBW.GetRolesXUsers(
                 new Abstracciones.Modelos.User
                 {
-                    UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value
+                    UserName = httpContext.User.Claims.Where(c => c.Type == "user").FirstOrDefault().Value
                 });
         }
 
@@ -93,7 +93,7 @@ namespace Autorizacion.Middleware
             return await _autorizacionBW.GetUser(
                 new Abstracciones.Modelos.User
                 {
-                    UserName = httpContext.User.Claims.Where(c => c.Type == "usuario").FirstOrDefault().Value
+                    UserName = httpContext.User.Claims.Where(c => c.Type == "user").FirstOrDefault().Value
                 });
         }
     }
